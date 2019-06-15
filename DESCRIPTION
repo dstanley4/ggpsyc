@@ -1,11 +1,17 @@
 Package: ggpsyc
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Create graphs similar to those in Introduction to the New Statistics
 Version: 0.1.0
 Author: Who wrote it
 Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Description: Create graphs similar to those in Introduction to the New Statistics.
+    Only t-test and 1-way ANOVA graphs currently supported.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Imports:
+    stats,
+    dplyr,
+    ggplot2,
+    grDevices
+RoxygenNote: 6.1.1

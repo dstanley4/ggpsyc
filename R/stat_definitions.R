@@ -115,29 +115,3 @@ stat_two_group_ci <- function(mapping = NULL, data = NULL, geom = "point",
   )
 }
 
-# MeanDiffPoints
-# list(
-#   ggplot2::layer(
-#     stat = MeanDiffCI, data = data, mapping = mapping, geom = "errorbar",
-#     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-#     params = list(na.rm = na.rm, ...)
-#   ),
-#   ggplot2::layer(
-#     stat = DiffScale, data = data, mapping = mapping, geom = "segment",
-#     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-#     params = list(na.rm = na.rm,...)
-#   ),
-#   ggplot2::layer(
-#     stat = DiffScaleLabels, data = data, mapping = mapping, geom = "text",
-#     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-#     params = list(na.rm = na.rm, size = text_size, ...)
-#   ),
-#   ggplot2::layer(
-#     stat = ExtendXAxis, data = data, mapping = mapping, geom = "point",
-#     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-#     params = list(na.rm = na.rm, alpha = 0,...)
-#   )
-
-
-
-

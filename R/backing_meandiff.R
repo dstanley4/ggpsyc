@@ -1,9 +1,12 @@
+
+
+
 MeanDiffLineGroup1<- ggplot2::ggproto("MeanDiffLineGroup1", ggplot2::Stat,
                                       required_aes = c("x", "y"),
 
-                                      compute_panel = function(data, scales, level, group1, group2, width) {
+                                      compute_panel = function(data, scales, level, width) {
 
-                                        data <- line_to_edge_data(data, scales, group1, group2, desired_group = 1)
+                                        data <- line_to_edge_data(data, scales, desired_group = 1)
                                         data
 
                                       }
@@ -13,8 +16,8 @@ MeanDiffLineGroup1<- ggplot2::ggproto("MeanDiffLineGroup1", ggplot2::Stat,
 MeanDiffLineGroup2<- ggplot2::ggproto("MeanDiffLineGroup2", ggplot2::Stat,
                                       required_aes = c("x", "y"),
 
-                                      compute_panel = function(data, scales, level, group1, group2, width) {
-                                        data <- line_to_edge_data(data, scales, group1, group2, desired_group = 2)
+                                      compute_panel = function(data, scales, width) {
+                                        data <- line_to_edge_data(data, scales, desired_group = 2)
                                         data
                                       }
 )
@@ -22,10 +25,10 @@ MeanDiffLineGroup2<- ggplot2::ggproto("MeanDiffLineGroup2", ggplot2::Stat,
 MeanDiffPoints<- ggplot2::ggproto("MeanDiffPoints", ggplot2::Stat,
                                   required_aes = c("x", "y"),
 
-                                  compute_panel = function(data, scales, level, group1, group2, width) {
+                                  compute_panel = function(data, scales, level, width) {
                                     maxgroup <- max(data$group)
-                                    data1 <- edge_point_data(data, scales, group1, group2, desired_group = 1)
-                                    data2 <- edge_point_data(data, scales, group1, group2, desired_group = 2)
+                                    data1 <- edge_point_data(data, scales, desired_group = 1)
+                                    data2 <- edge_point_data(data, scales, desired_group = 2)
 
                                     if (data1$y > data2$y) {
                                       data <- data1
@@ -39,12 +42,33 @@ MeanDiffPoints<- ggplot2::ggproto("MeanDiffPoints", ggplot2::Stat,
                                   }
 )
 
-MeanDiffCI<- ggplot2::ggproto("MeanDiffPoints", ggplot2::Stat,
+MeanDiffCI<- ggplot2::ggproto("MeanDiffCI", ggplot2::Stat,
                               required_aes = c("x", "y"),
 
-                              compute_panel = function(data, scales, level = .95, group1, group2, alternative, width) {
-                                data <- ci_diff(data, scales, level, group1, group2, alternative)
-                                data
+                              compute_panel = function(data, scales, level, paired, var.equal, width, ymin, ymax) {
+
+                                ci_data <- ci_diff(data = data,
+                                                   scales = scales,
+                                                   level = level,
+                                                   paired = paired,
+                                                   var.equal = var.equal)
+                                ci_data
+                              }
+)
+
+
+MeanDiffCIPoint<- ggplot2::ggproto("MeanDiffCIPoint", ggplot2::Stat,
+                              required_aes = c("x", "y"),
+
+                              compute_panel = function(data, scales, level, paired, var.equal, width, ymin, ymax) {
+
+                                ci_data <- ci_diff(data = data,
+                                                   scales = scales,
+                                                   level = level,
+                                                   paired = paired,
+                                                   var.equal = var.equal)
+                                ci_data$y[1] <- ci_data$maxmean[1]
+                                ci_data
                               }
 )
 
@@ -52,9 +76,14 @@ MeanDiffCI<- ggplot2::ggproto("MeanDiffPoints", ggplot2::Stat,
 DiffLabel<- ggplot2::ggproto("DiffLabel", ggplot2::Stat,
                              required_aes = c("x", "y"),
 
-                             compute_panel = function(data, scales, level = .95, group1, group2, width) {
+                             compute_panel = function(data, scales, level, paired, var.equal, width) {
 
-                               ci_data <- ci_diff(data, scales, level, group1, group2, width)
+                               ci_data <- ci_diff(data = data,
+                                                  scales = scales,
+                                                  level = level,
+                                                  width = width,
+                                                  paired = paired,
+                                                  var.equal = var.equal)
 
                                yrangeinfo <- scales$y$range$range
                                ysize <- yrangeinfo[2] - yrangeinfo[1]
@@ -68,9 +97,13 @@ DiffLabel<- ggplot2::ggproto("DiffLabel", ggplot2::Stat,
 DiffScale<- ggplot2::ggproto("DiffScale", ggplot2::Stat,
                              required_aes = c("x", "y"),
 
-                             compute_panel = function(data, scales, level = .95, group1, group2, width, alternative) {
+                             compute_panel = function(data, scales, level, width, paired, var.equal) {
 
-                               scale_details <- get_scale_details(data, scales, level, group1, group2, alternative)
+                               scale_details <- get_scale_details(data = data,
+                                                                  scales = scale,
+                                                                  level = level,
+                                                                  paired = paired,
+                                                                  var.equal = var.equal)
 
                                scale_vertical <- scale_details$scale_vertical
                                scale_ticks <- scale_details$scale_ticks
@@ -86,9 +119,14 @@ DiffScale<- ggplot2::ggproto("DiffScale", ggplot2::Stat,
 DiffScaleLabels<- ggplot2::ggproto("DiffScale", ggplot2::Stat,
                                    required_aes = c("x", "y"),
 
-                                   compute_panel = function(data, scales, level = .95, group1, group2, alternative, width) {
+                                   compute_panel = function(data, scales, level, paired, var.equal, width) {
 
-                                     scale_details <- get_scale_details(data, scales, level, group1, group2, alternative)
+                                     scale_details <- get_scale_details(data = data,
+                                                                        scales = scales,
+                                                                        level = level,
+                                                                        var.equal = var.equal,
+                                                                        paired = paired)
+
                                      scale_ticks <- scale_details$scale_ticks
                                      scale_labels <- scale_details$scale_labels
 
@@ -107,7 +145,7 @@ DiffScaleLabels<- ggplot2::ggproto("DiffScale", ggplot2::Stat,
 ExtendXAxis<- ggplot2::ggproto("ExtendXAxis", ggplot2::Stat,
                                required_aes = c("x", "y"),
 
-                               compute_panel = function(data, scales, level = .95, group1, group2, width) {
+                               compute_panel = function(data, scales, level, width) {
 
                                  xnew <- max(data$x) + 2
                                  ynew <- max(data$y)
@@ -123,25 +161,29 @@ ExtendXAxis<- ggplot2::ggproto("ExtendXAxis", ggplot2::Stat,
 
 
 
-line_to_edge_data <- function(data, scales, group1, group2, desired_group) {
-  group1 <- make_group_info_a_list(group1)
-  group2 <- make_group_info_a_list(group2)
+line_to_edge_data <- function(data, scales, desired_group) {
 
+  group1 <- 1
+  group2 <- 2
   x_end <- max(data$x) + 1.3
 
-  data_subset <- get_group_data(data, scales, group1, group2, desired_group )
+  id_desired_group <- data$x == desired_group
+  data_subset <- data[id_desired_group, ]
+  #
+  #
+  # data_subset <- get_group_data(data, scales, desired_group )
 
   dodge_adjust <- 0
 
-  if (desired_group == 1) {
-    if (any("dodge_adjust" %in% names(group1))) {
-      dodge_adjust <- group1$dodge_adjust
-    }
-  } else {
-    if (any("dodge_adjust" %in% names(group2))) {
-      dodge_adjust <- group2$dodge_adjust
-    }
-  }
+  # if (desired_group == 1) {
+  #   if (any("dodge_adjust" %in% names(group1))) {
+  #     dodge_adjust <- group1$dodge_adjust
+  #   }
+  # } else {
+  #   if (any("dodge_adjust" %in% names(group2))) {
+  #     dodge_adjust <- group2$dodge_adjust
+  #   }
+  # }
 
 
   # print(data_subset)
@@ -159,11 +201,13 @@ line_to_edge_data <- function(data, scales, group1, group2, desired_group) {
   data
 }
 
-get_group_data <- function(data, scales, group1, group2, desired_group) {
+get_group_data <- function(data, scales, desired_group) {
   #print("get_group_data")
   #print(data)
-  group1 <- make_group_info_a_list(group1)
-  group2 <- make_group_info_a_list(group2)
+  # group1 <- make_group_info_a_list(group1)
+  # group2 <- make_group_info_a_list(group2)
+  group1 <- 1
+  group2 <- 2
 
   fac_levels <- scales$x$range$range
   data$levx <- factor(data$x)
@@ -210,13 +254,14 @@ get_group_data <- function(data, scales, group1, group2, desired_group) {
 }
 
 
-edge_point_data <- function(data, scales, group1, group2, desired_group) {
-  group1 <- make_group_info_a_list(group1)
-  group2 <- make_group_info_a_list(group2)
-
+edge_point_data <- function(data, scales, desired_group) {
+  # group1 <- make_group_info_a_list(group1)
+  # group2 <- make_group_info_a_list(group2)
+  group1 <- 1
+  group2 <- 2
   x <- max(data$x) + 1
 
-  data_subset <- get_group_data(data, scales, group1, group2, desired_group )
+  data_subset <- get_group_data(data, scales, desired_group )
   y <- mean(data_subset$y)
 
   group <- data_subset$group[1]
@@ -226,26 +271,41 @@ edge_point_data <- function(data, scales, group1, group2, desired_group) {
   data
 }
 
-ci_diff <- function(data, scales, level = .95, group1, group2, alternative = "two.sided") {
-  group1 <- make_group_info_a_list(group1)
-  group2 <- make_group_info_a_list(group2)
+ci_diff <- function(data, scales, level, paired, var.equal) {
+  group1 <- 1
+  group2 <- 2
 
-  data1 <- get_group_data(data, scales, group1, group2, desired_group = 1)
-  data2 <- get_group_data(data, scales, group1, group2, desired_group = 2)
+  id1 <- data$x == 1
+  id2 <- data$x == 2
 
-  g1data <- data1$y
-  g2data <- data2$y
+  print(data)
+
+  g1data <- data$y[id1]
+  g2data <- data$y[id2]
 
   g1mean <- mean(g1data)
   g2mean <- mean(g2data)
   min_mean <- min(g1mean, g2mean)
+  max_mean <- max(g1mean, g2mean)
 
   #alternative = "two.sided"
-  paired = FALSE
-  var.equal = TRUE
+  alternative = "two.sided"
+  if (paired == FALSE) {
+    tresult <- stats::t.test(x = g1data,
+                             y = g2data,
+                             alternative = alternative,
+                             paired = paired,
+                             var.equal = var.equal,
+                             conf.level = level)
 
-  tresult <- stats::t.test(x = g1data, y = g2data, alternative = alternative, paired = paired, var.equal = var.equal, conf.level = level)
-  #print(tresult)
+  } else {
+    tresult <- stats::t.test(x = g1data,
+                             y = g2data,
+                             alternative = alternative,
+                             paired = paired,
+                             conf.level = level)
+  }
+
 
   x_end <- max(data$x) + 1
   ymin <- tresult$conf.int[1] + min_mean
@@ -253,23 +313,37 @@ ci_diff <- function(data, scales, level = .95, group1, group2, alternative = "tw
   cimin <- tresult$conf.int[1]
   cimax <- tresult$conf.int[2]
 
-  group <- data1$group[1]
-  PANEL <- data1$PANEL[1]
+  group <- max(data$group)+1
+  PANEL <- data$PANEL[1]
 
-  data <- data.frame(x = x_end, y = min_mean, ymin = ymin, ymax = ymax, PANEL = PANEL, group = group, cimin = cimin, cimax = cimax)
-  data
+
+
+
+  dataout <- data.frame(x = x_end,
+                     y = min_mean,
+                     ymin = ymin,
+                     ymax = ymax,
+                     PANEL = PANEL,
+                     group = group,
+                     cimin = cimin,
+                     cimax = cimax,
+                     maxmean = max_mean)
+
+  print(dataout)
+  dataout
 }
 
 
-get_scale_details <- function(data, scales, level, group1, group2, alternative) {
-
-  group1 <- make_group_info_a_list(group1)
-  group2 <- make_group_info_a_list(group2)
+get_scale_details <- function(data, scales, level, paired, var.equal) {
 
   PANEL <- data$PANEL[1]
   group <- data$group[1]
 
-  ci_data <- ci_diff(data, scales, level, group1, group2, alternative)
+  ci_data <- ci_diff(data = data,
+                     scales = scales,
+                     level = level,
+                     paired = paired,
+                     var.equal = var.equal)
 
   scale_x <- max(data$x) + 1.3
   scale_y <- ci_data$y[1] #min mean value

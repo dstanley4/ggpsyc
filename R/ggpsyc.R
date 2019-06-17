@@ -18,7 +18,7 @@
 #'Author: \tab David J. Stanley \email{dstanley@@uoguelph.ca}\cr
 #'Maintainer: \tab David J. Stanley \email{dstanley@@uoguelph.ca}
 #'}
-#'@importFrom "stats" "qnorm" "rnorm" "lm"
+#'@importFrom "stats" "qnorm" "rnorm" "lm" "t.test"
 utils::globalVariables(c(".data"))
 NULL
 

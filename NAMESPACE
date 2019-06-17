@@ -2,6 +2,7 @@
 
 export(geom_two_group_between)
 export(geom_two_group_within)
+export(stat_offset_points)
 export(stat_paired_difference_points)
 export(stat_paired_points)
 export(stat_two_group_ci)

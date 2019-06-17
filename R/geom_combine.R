@@ -8,7 +8,8 @@ geom_two_group_between <- function() {
                  width = .2),
     ggplot2::stat_summary(fun.data = mean_cl_normal,
                  geom = "point",
-                 size = 3)
+                 size = 3),
+    stat_offset_points(position = ggplot2::position_jitter(width = .1))
   )
   # WARNING FIX ABOVE LINE no alcohol
   #ggplot2::geom_point(mapping = ggplot2::aes(as.numeric(alcohol) - 0.25),

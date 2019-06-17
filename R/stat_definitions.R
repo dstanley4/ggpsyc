@@ -41,6 +41,25 @@ stat_paired_difference_points <- function(mapping = NULL, data = NULL, geom = "p
 
 #' This is the documentation for stat_catseye. remember to account for missing data
 #' @inheritParams ggplot2::stat_identity
+#' @param alpha Alpha transparency. Default 1.0 value.
+#' @param offset Offset for points
+#' @export
+stat_offset_points <- function(mapping = NULL, data = NULL, geom = "point",
+                                          position = "identity", show.legend = NA,
+                                          inherit.aes = TRUE, alpha = 1, offset = -.30, ...) {
+
+  list(
+    ggplot2::layer(
+      stat = OffsetPoints, data = data, mapping = mapping, geom = "point",
+      position = position, show.legend = show.legend, inherit.aes = inherit.aes,
+      params = list(alpha = alpha, offset = offset, ...)
+    )
+  )
+}
+
+
+#' This is the documentation for stat_catseye. remember to account for missing data
+#' @inheritParams ggplot2::stat_identity
 #' @param paired Indicate if paired data or not. TRUE/FALSE. Default is FALSE
 #' @param var.equal Assume variance equal for confidence interval construction. TRUE/FALSE. Default is TRUE
 #' @param level Confidence level for confidence interval. 0 to 1. Default .95

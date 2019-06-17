@@ -201,4 +201,12 @@ ExtendXAxis<- ggplot2::ggproto("ExtendXAxis", ggplot2::Stat,
 )
 
 
+OffsetPoints<- ggplot2::ggproto("OffsetPoints", ggplot2::Stat,
+                               required_aes = c("x", "y"),
+
+                               compute_panel = function(data, scales, level, width, offset) {
+                                 data$x <- data$x + offset
+                                 data
+                               }
+)
 

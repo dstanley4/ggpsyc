@@ -1,3 +1,4 @@
+#' @export
 geom_two_group_between <- function() {
   list(
     stat_two_group_ci(paired = FALSE),
@@ -12,6 +13,7 @@ geom_two_group_between <- function() {
   )
 }
 
+#' @export
 geom_two_group_within <- function() {
   list(
     stat_summary(fun.data = mean_cl_normal,

@@ -1,77 +1,53 @@
 #' This is the documentation for stat_catseye. remember to account for missing data
-#' @param mapping asdfasd
-#' @param data adfasd
-#' @param geom asdfasd
-#' @param position asdfasd
-#' @param na.rm adsfasdf
-#' @param show.legend asdfads
-#' @param inherit.aes adfasd
-#' @param group1 asdsf
-#' @param group2 asdsf
-#' @param width asdf
-#' @param ... adfasdf
+#' @inheritParams ggplot2::stat_identity
+#' @param alpha Alpha transparency. Default .50 value.
 #' @export
 stat_paired_points <- function(mapping = NULL, data = NULL, geom = "point",
-                           position = "identity", na.rm = FALSE, show.legend = NA,
-                           inherit.aes = TRUE, group1 = NA, group2 = NA, alternative = "two.sided", text_size = 3, ...) {
+                           position = "identity", show.legend = NA,
+                           inherit.aes = TRUE, alpha =.50, ...) {
 
   list(
     ggplot2::layer(
       stat = InsetPoints, data = data, mapping = mapping, geom = "point",
       position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-      params = list(na.rm = na.rm, alpha = .50, ...)
+      params = list(alpha = alpha, ...)
     ),
     ggplot2::layer(
       stat = InsetLines, data = data, mapping = mapping, geom = "line",
       position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-      params = list(na.rm = na.rm, alpha = .50, size = .3, ...)
+      params = list(alpha = alpha, size = .3, ...)
     )
   )
 }
 
 
 #' This is the documentation for stat_catseye. remember to account for missing data
-#' @param mapping asdfasd
-#' @param data adfasd
-#' @param geom asdfasd
-#' @param position asdfasd
-#' @param na.rm adsfasdf
-#' @param show.legend asdfads
-#' @param inherit.aes adfasd
-#' @param group1 asdsf
-#' @param group2 asdsf
-#' @param width asdf
-#' @param ... adfasdf
+#' @inheritParams ggplot2::stat_identity
+#' @param alpha Alpha transparency. Default .50 value.
 #' @export
 stat_paired_difference_points <- function(mapping = NULL, data = NULL, geom = "point",
-                               position = "identity", na.rm = FALSE, show.legend = NA,
-                               inherit.aes = TRUE, group1 = NA, group2 = NA, alternative = "two.sided", text_size = 3, ...) {
+                               position = "identity", show.legend = NA,
+                               inherit.aes = TRUE, alpha = .50, ...) {
 
   list(
     ggplot2::layer(
       stat = DiffScores, data = data, mapping = mapping, geom = "point",
       position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-      params = list(na.rm = na.rm, alpha = .50, shape = 17,...)
+      params = list(alpha = alpha, shape = 17, ...)
     )
   )
 }
 
 
 #' This is the documentation for stat_catseye. remember to account for missing data
-#' @param mapping asdfasd
-#' @param data adfasd
-#' @param geom asdfasd
-#' @param position asdfasd
-#' @param na.rm adsfasdf
-#' @param show.legend asdfads
-#' @param inherit.aes adfasd
-#' @param group1 asdsf
-#' @param group2 asdsf
-#' @param width asdf
-#' @param ... adfasdf
+#' @inheritParams ggplot2::stat_identity
+#' @param paired Indicate if paired data or not. TRUE/FALSE. Default is FALSE
+#' @param var.equal Assume variance equal for confidence interval construction. TRUE/FALSE. Default is TRUE
+#' @param level Confidence level for confidence interval. 0 to 1. Default .95
+#' @param text_size Font size for right hand axis
 #' @export
 stat_two_group_ci <- function(mapping = NULL, data = NULL, geom = "point",
-                                          position = "identity", na.rm = FALSE, show.legend = NA,
+                                          position = "identity", show.legend = NA,
                                           inherit.aes = TRUE, paired = FALSE, var.equal = TRUE,
                                           text_size = 3, level = .95, ...) {
 
@@ -79,38 +55,38 @@ stat_two_group_ci <- function(mapping = NULL, data = NULL, geom = "point",
     ggplot2::layer(
       stat = MeanDiffLineGroup1, data = data, mapping = mapping, geom = "line",
       position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-      params = list(na.rm = na.rm, linetype = 2, ...)
+      params = list(linetype = 2, ...)
     ),
     ggplot2::layer(
       stat = MeanDiffLineGroup2, data = data, mapping = mapping, geom = "line",
       position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-      params = list(na.rm = na.rm, linetype = 2, ...)
+      params = list(linetype = 2, ...)
     ),
     ggplot2::layer(
       stat = MeanDiffCI, data = data, mapping = mapping, geom = "errorbar",
       position = position, show.legend = FALSE, inherit.aes = inherit.aes,
-      params = list(na.rm = na.rm, width = .2, paired = paired, var.equal = var.equal, level = level, ...)
+      params = list(width = .2, paired = paired, var.equal = var.equal, level = level, ...)
     ),
     ggplot2::layer(
       stat = MeanDiffCIPoint, data = data, mapping = mapping, geom = "point",
       position = position, show.legend = FALSE, inherit.aes = inherit.aes,
-      params = list(na.rm = na.rm, paired = paired, var.equal = var.equal,
+      params = list(paired = paired, var.equal = var.equal,
                     level = level, shape = 17, size = 4, ...)
     ),
     ggplot2::layer(
       stat = DiffScale, data = data, mapping = mapping, geom = "segment",
       position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-      params = list(na.rm = na.rm, var.equal = var.equal, paired = paired, level = level, ...)
+      params = list(var.equal = var.equal, paired = paired, level = level, ...)
     ),
     ggplot2::layer(
       stat = DiffScaleLabels, data = data, mapping = mapping, geom = "text",
       position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-      params = list(na.rm = na.rm, var.equal = var.equal, paired = paired, level = level, size = text_size, ...)
+      params = list(var.equal = var.equal, paired = paired, level = level, size = text_size, ...)
     ),
     ggplot2::layer(
       stat = ExtendXAxis, data = data, mapping = mapping, geom = "point",
       position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-      params = list(na.rm = na.rm, alpha = 0, ...)
+      params = list(alpha = 0, ...)
     )
   )
 }

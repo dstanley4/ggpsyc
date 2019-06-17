@@ -124,7 +124,6 @@ DiffLabel<- ggplot2::ggproto("DiffLabel", ggplot2::Stat,
                                ci_data <- ci_diff(data = data,
                                                   scales = scales,
                                                   level = level,
-                                                  width = width,
                                                   paired = paired,
                                                   var.equal = var.equal)
 

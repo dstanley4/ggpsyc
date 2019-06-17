@@ -1,30 +1,33 @@
+#' Create a plot for independent groups t-test as per Introduction to the New Statistics
 #' @export
 geom_two_group_between <- function() {
   list(
     stat_two_group_ci(paired = FALSE),
-    stat_summary(fun.data = mean_cl_normal,
+    ggplot2::stat_summary(fun.data = mean_cl_normal,
                  geom = "errorbar",
                  width = .2),
-    stat_summary(fun.data = mean_cl_normal,
+    ggplot2::stat_summary(fun.data = mean_cl_normal,
                  geom = "point",
-                 size = 3),
-    geom_point(mapping = aes(as.numeric(alcohol) - 0.25),
-               position = position_jitter(width = .1))
+                 size = 3)
   )
+  # WARNING FIX ABOVE LINE no alcohol
+  #ggplot2::geom_point(mapping = ggplot2::aes(as.numeric(alcohol) - 0.25),
+  #                    position = ggplot2::position_jitter(width = .1))
 }
 
+#' Create a plot for paired groups t-test as per Introduction to the New Statistics
 #' @export
 geom_two_group_within <- function() {
   list(
-    stat_summary(fun.data = mean_cl_normal,
+    ggplot2::stat_summary(fun.data = mean_cl_normal,
                  geom = "errorbar",
                  width = .2,
                  group = 1),
-    stat_summary(fun.data = mean_cl_normal,
+    ggplot2::stat_summary(fun.data = mean_cl_normal,
                  geom = "point",
                  size = 3,
                  group = 1),
-    stat_summary(fun.data = mean_cl_normal,
+    ggplot2::stat_summary(fun.data = mean_cl_normal,
                  geom = "line",
                  size = 1,
                  group = 1),

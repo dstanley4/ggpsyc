@@ -19,7 +19,7 @@
 #'Maintainer: \tab David J. Stanley \email{dstanley@@uoguelph.ca}
 #'}
 #'@importFrom "stats" "qnorm" "rnorm" "lm" "t.test"
-utils::globalVariables(c(".data"))
+utils::globalVariables(c(".data","mean_cl_normal"))
 NULL
 
 

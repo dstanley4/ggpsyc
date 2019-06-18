@@ -103,6 +103,11 @@ stat_two_group_ci <- function(mapping = NULL, data = NULL, geom = "point",
       params = list(var.equal = var.equal, paired = paired, level = level, size = text_size, ...)
     ),
     ggplot2::layer(
+      stat = ScaleTitle, data = data, mapping = mapping, geom = "text",
+      position = position, show.legend = show.legend, inherit.aes = inherit.aes,
+      params = list(var.equal = var.equal, paired = paired, level = level, angle = 90,...)
+    ),
+    ggplot2::layer(
       stat = ExtendXAxis, data = data, mapping = mapping, geom = "point",
       position = position, show.legend = show.legend, inherit.aes = inherit.aes,
       params = list(alpha = 0, ...)

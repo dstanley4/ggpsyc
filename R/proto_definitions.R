@@ -52,37 +52,37 @@ InsetPoints<- ggplot2::ggproto("InsetPoints", ggplot2::Stat,
                                }
 )
 
-InternalWhiskers<- ggplot2::ggproto("InternalWhiskers", ggplot2::Stat,
-                                    required_aes = c("x", "y"),
+# InternalWhiskers<- ggplot2::ggproto("InternalWhiskers", ggplot2::Stat,
+#                                     required_aes = c("x", "y"),
+#
+#                                     compute_panel = function(data, scales, level, group1, group2) {
+#
+#                                       data  <- get_summary_df(data)
+#                                       #print(data)
+#                                       data
+#                                     }
+# )
 
-                                    compute_panel = function(data, scales, level, group1, group2) {
 
-                                      data  <- get_summary_df(data)
-                                      #print(data)
-                                      data
-                                    }
-)
+# MeanPoints<- ggplot2::ggproto("MeanPoints", ggplot2::Stat,
+#                               required_aes = c("x", "y"),
+#
+#                               compute_panel = function(data, scales, level, group1, group2) {
+#
+#                                 data  <- get_summary_df(data)
+#                                 data
+#                               }
+# )
 
-
-MeanPoints<- ggplot2::ggproto("MeanPoints", ggplot2::Stat,
-                              required_aes = c("x", "y"),
-
-                              compute_panel = function(data, scales, level, group1, group2) {
-
-                                data  <- get_summary_df(data)
-                                data
-                              }
-)
-
-MeanLine<- ggplot2::ggproto("MeanLine", ggplot2::Stat,
-                            required_aes = c("x", "y"),
-
-                            compute_panel = function(data, scales, level, group1, group2) {
-
-                              data  <- get_summary_df(data)
-                              data
-                            }
-)
+# MeanLine<- ggplot2::ggproto("MeanLine", ggplot2::Stat,
+#                             required_aes = c("x", "y"),
+#
+#                             compute_panel = function(data, scales, level, group1, group2) {
+#
+#                               data  <- get_summary_df(data)
+#                               data
+#                             }
+# )
 
 
 MeanDiffCI<- ggplot2::ggproto("MeanDiffCI", ggplot2::Stat,
@@ -116,25 +116,6 @@ MeanDiffCIPoint<- ggplot2::ggproto("MeanDiffCIPoint", ggplot2::Stat,
 )
 
 
-DiffLabel<- ggplot2::ggproto("DiffLabel", ggplot2::Stat,
-                             required_aes = c("x", "y"),
-
-                             compute_panel = function(data, scales, level, paired, var.equal, width) {
-
-                               ci_data <- ci_diff(data = data,
-                                                  scales = scales,
-                                                  level = level,
-                                                  paired = paired,
-                                                  var.equal = var.equal)
-
-                               yrangeinfo <- scales$y$range$range
-                               ysize <- yrangeinfo[2] - yrangeinfo[1]
-                               ybump <- .1 * ysize
-
-                               data <- data.frame(x = ci_data$x[1], y = ci_data$ymax+ybump, label = "Difference", PANEL = ci_data$PANEL[1], group = ci_data$group[1])
-                               data
-                             }
-)
 
 DiffScale<- ggplot2::ggproto("DiffScale", ggplot2::Stat,
                              required_aes = c("x", "y"),
@@ -172,7 +153,7 @@ DiffScaleLabels<- ggplot2::ggproto("DiffScale", ggplot2::Stat,
                                      scale_ticks <- scale_details$scale_ticks
                                      scale_labels <- scale_details$scale_labels
 
-                                     x <- scale_ticks$xend + .15
+                                     x <- scale_ticks$xend + .1
                                      y <- scale_ticks$y
                                      label <- scale_labels
                                      PANEL <- scale_ticks$PANEL
@@ -210,3 +191,49 @@ OffsetPoints<- ggplot2::ggproto("OffsetPoints", ggplot2::Stat,
                                }
 )
 
+ScaleTitle<- ggplot2::ggproto("ScaleTitle", ggplot2::Stat,
+                                required_aes = c("x", "y"),
+
+                                compute_panel = function(data, scales, level, width, paired, var.equal) {
+
+                                  scale_details <- get_scale_details(data = data,
+                                                                     scales = scales,
+                                                                     level = level,
+                                                                     var.equal = var.equal,
+                                                                     paired = paired)
+
+                                  scale_ticks <- scale_details$scale_ticks
+                                  scale_labels <- scale_details$scale_labels
+
+                                  x <- scale_ticks$xend[6] + .3
+                                  y <- scale_ticks$y[6]
+                                  label <- "Difference"
+                                  PANEL <- scale_ticks$PANEL[1]
+                                  group <- scale_ticks$group[1]
+
+                                  data <- data.frame(x, y, label, PANEL, group)
+                                  data
+                                }
+)
+
+
+# DiffLabel<- ggplot2::ggproto("DiffLabel", ggplot2::Stat,
+#                              required_aes = c("x", "y"),
+#
+#                              compute_panel = function(data, scales, level, paired, var.equal, width) {
+#
+#
+#                                # ci_data <- ci_diff(data = data,
+#                                #                    scales = scales,
+#                                #                    level = level,
+#                                #                    paired = paired,
+#                                #                    var.equal = var.equal)
+#                                #
+#                                # yrangeinfo <- scales$y$range$range
+#                                # ysize <- yrangeinfo[2] - yrangeinfo[1]
+#                                # ybump <- .1 * ysize
+#                                #
+#                                # data <- data.frame(x = ci_data$x[1], y = ci_data$ymax+ybump, label = "Difference", PANEL = ci_data$PANEL[1], group = ci_data$group[1])
+#                                data
+#                              }
+# )

@@ -9,7 +9,7 @@ geom_two_group_between <- function() {
     ggplot2::stat_summary(fun.data = mean_cl_normal,
                  geom = "point",
                  size = 3),
-    stat_offset_points(position = ggplot2::position_jitter(width = .10))
+    stat_jitter_dodge()
   )
 }
 

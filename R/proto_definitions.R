@@ -110,6 +110,7 @@ MeanDiffCIPoint<- ggplot2::ggproto("MeanDiffCIPoint", ggplot2::Stat,
                                                         level = level,
                                                         paired = paired,
                                                         var.equal = var.equal)
+                                     print(ci_data)
                                      ci_data$y[1] <- ci_data$maxmean[1]
                                      ci_data
                                    }
@@ -185,8 +186,8 @@ ExtendXAxis<- ggplot2::ggproto("ExtendXAxis", ggplot2::Stat,
 OffsetPoints<- ggplot2::ggproto("OffsetPoints", ggplot2::Stat,
                                required_aes = c("x", "y"),
 
-                               compute_panel = function(data, scales, level, width, offset) {
-                                 data$x <- data$x + offset
+                               compute_panel = function(data, scales, level, width, dodge) {
+                                 data$x <- data$x + dodge
                                  data
                                }
 )
@@ -205,8 +206,9 @@ ScaleTitle<- ggplot2::ggproto("ScaleTitle", ggplot2::Stat,
                                   scale_ticks <- scale_details$scale_ticks
                                   scale_labels <- scale_details$scale_labels
 
-                                  x <- scale_ticks$xend[6] + .3
-                                  y <- scale_ticks$y[6]
+                                  mid <- round(length(scale_ticks$xend)/2)
+                                  x <- scale_ticks$xend[mid] + .3
+                                  y <- scale_ticks$y[mid]
                                   label <- "Difference"
                                   PANEL <- scale_ticks$PANEL[1]
                                   group <- scale_ticks$group[1]

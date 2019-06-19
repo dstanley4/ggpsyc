@@ -44,15 +44,15 @@ stat_paired_difference_points <- function(mapping = NULL, data = NULL, geom = "p
 #' @param alpha Alpha transparency. Default 1.0 value.
 #' @param offset Offset for points
 #' @export
-stat_offset_points <- function(mapping = NULL, data = NULL, geom = "point",
+stat_jitter_dodge <- function(mapping = NULL, data = NULL, geom = "point",
                                           position = "identity", show.legend = NA,
-                                          inherit.aes = TRUE, alpha = 1, offset = -.30, ...) {
+                                          inherit.aes = TRUE, alpha = 1, dodge = -.30, width = .1, ...) {
 
   list(
     ggplot2::layer(
       stat = OffsetPoints, data = data, mapping = mapping, geom = "point",
-      position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-      params = list(alpha = alpha, offset = offset, ...)
+      position = position_jitter(width = width), show.legend = show.legend, inherit.aes = inherit.aes,
+      params = list(alpha = alpha, dodge = dodge, ...)
     )
   )
 }
@@ -105,7 +105,7 @@ stat_two_group_ci <- function(mapping = NULL, data = NULL, geom = "point",
     ggplot2::layer(
       stat = ScaleTitle, data = data, mapping = mapping, geom = "text",
       position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-      params = list(var.equal = var.equal, paired = paired, level = level, angle = 90,...)
+      params = list(var.equal = var.equal, paired = paired, level = level, angle = 90, ...)
     ),
     ggplot2::layer(
       stat = ExtendXAxis, data = data, mapping = mapping, geom = "point",

@@ -100,18 +100,29 @@ ci_diff <- function(data, scales, level, paired, var.equal) {
   min_mean <- min(g1mean, g2mean)
   max_mean <- max(g1mean, g2mean)
 
+
+
   alternative = "two.sided"
+  if (g1mean > g2mean) {
+    data_greater <- g1data
+    data_lesser <- g2data
+  } else {
+    data_greater <- g2data
+    data_lesser <- g1data
+  }
+
+
   if (paired == FALSE) {
-    tresult <- stats::t.test(x = g1data,
-                             y = g2data,
+    tresult <- stats::t.test(x = data_greater,
+                             y = data_lesser,
                              alternative = alternative,
                              paired = paired,
                              var.equal = var.equal,
                              conf.level = level)
 
   } else {
-    tresult <- stats::t.test(x = g1data,
-                             y = g2data,
+    tresult <- stats::t.test(x = data_greater,
+                             y = data_lesser,
                              alternative = alternative,
                              paired = paired,
                              conf.level = level)
@@ -218,10 +229,15 @@ create_diff_data <- function(data, scales, level) {
 
   condition1 <- data$y[id_for_cond1]
   condition2 <- data$y[id_for_cond2]
-  diff <- condition1 - condition2
 
   mean_condition1 <- mean(condition1, na.rm = TRUE)
   mean_condition2 <- mean(condition2, na.rm = TRUE)
+
+  if (mean_condition1 > mean_condition2) {
+    diff <- condition1 - condition2
+  } else {
+    diff <- condition2 - condition1
+  }
 
   min_mean <- min(mean_condition1, mean_condition2)
 

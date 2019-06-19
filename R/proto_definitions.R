@@ -110,7 +110,7 @@ MeanDiffCIPoint<- ggplot2::ggproto("MeanDiffCIPoint", ggplot2::Stat,
                                                         level = level,
                                                         paired = paired,
                                                         var.equal = var.equal)
-                                     print(ci_data)
+                                     #print(ci_data)
                                      ci_data$y[1] <- ci_data$maxmean[1]
                                      ci_data
                                    }

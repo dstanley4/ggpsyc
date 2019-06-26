@@ -2,7 +2,7 @@ line_to_edge_data <- function(data, scales, desired_group) {
 
   group1 <- 1
   group2 <- 2
-  x_end <- max(data$x) + 1.3
+  x_end <- max(data$x, na.rm = TRUE) + 1.3
 
   id_desired_group <- data$x == desired_group
   data_subset <- data[id_desired_group, ]
@@ -11,7 +11,7 @@ line_to_edge_data <- function(data, scales, desired_group) {
 
 
 
-  y <- mean(data_subset$y)
+  y <- mean(data_subset$y, na.rm = TRUE)
   x_start <- data_subset$x[1] + dodge_adjust
   group <- data_subset$group[1]
   PANEL <- data_subset$PANEL[1]
@@ -72,10 +72,10 @@ get_group_data <- function(data, scales, desired_group) {
 edge_point_data <- function(data, scales, desired_group) {
   group1 <- 1
   group2 <- 2
-  x <- max(data$x) + 1
+  x <- max(data$x, na.rm = TRUE) + 1
 
   data_subset <- get_group_data(data, scales, desired_group )
-  y <- mean(data_subset$y)
+  y <- mean(data_subset$y, na.rm = TRUE)
 
   group <- data_subset$group[1]
   PANEL <- data_subset$PANEL[1]
@@ -95,10 +95,10 @@ ci_diff <- function(data, scales, level, paired, var.equal) {
   g1data <- data$y[id1]
   g2data <- data$y[id2]
 
-  g1mean <- mean(g1data)
-  g2mean <- mean(g2data)
-  min_mean <- min(g1mean, g2mean)
-  max_mean <- max(g1mean, g2mean)
+  g1mean <- mean(g1data, na.rm = TRUE)
+  g2mean <- mean(g2data, na.rm = TRUE)
+  min_mean <- min(g1mean, g2mean, na.rm = TRUE)
+  max_mean <- max(g1mean, g2mean, na.rm = TRUE)
 
 
 
@@ -129,13 +129,13 @@ ci_diff <- function(data, scales, level, paired, var.equal) {
   }
 
 
-  x_end <- max(data$x) + 1
+  x_end <- max(data$x, na.rm = TRUE) + 1
   ymin <- tresult$conf.int[1] + min_mean
   ymax <- tresult$conf.int[2] + min_mean
   cimin <- tresult$conf.int[1]
   cimax <- tresult$conf.int[2]
 
-  group <- max(data$group)+1
+  group <- max(data$group, na.rm = TRUE)+1
   PANEL <- data$PANEL[1]
 
 
@@ -166,7 +166,7 @@ get_scale_details <- function(data, scales, level, paired, var.equal) {
                      paired = paired,
                      var.equal = var.equal)
 
-  scale_x <- max(data$x) + 1.3
+  scale_x <- max(data$x,na.rm = TRUE) + 1.3
   scale_y <- ci_data$y[1] #min mean value
 
   LL <- ci_data$cimin[1]
@@ -178,7 +178,7 @@ get_scale_details <- function(data, scales, level, paired, var.equal) {
   ci_length_extended <- ci_length * .5
 
 
-  lowest_value <- min((0 - ci_length_extended*1.2), (LL - ci_length_extended*1.2))
+  lowest_value <- min((0 - ci_length_extended*1.2), (LL - ci_length_extended*1.2), na.rm = TRUE)
   highest_value <- UL + ci_length_extended
 
   ci_ticks <- grDevices::axisTicks(usr=c(lowest_value, highest_value),log=FALSE, nint = 8)
@@ -239,7 +239,7 @@ create_diff_data <- function(data, scales, level) {
     diff <- condition2 - condition1
   }
 
-  min_mean <- min(mean_condition1, mean_condition2)
+  min_mean <- min(mean_condition1, mean_condition2, na.rm = TRUE)
 
   diff_plus_mean <- diff + min_mean
   L <- length(diff)

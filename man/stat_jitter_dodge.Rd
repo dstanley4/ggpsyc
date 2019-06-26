@@ -47,12 +47,14 @@ the default plot specification, e.g. \code{\link[=borders]{borders()}}.}
 
 \item{alpha}{Alpha transparency. Default 1.0 value.}
 
+\item{dodge}{Offset for points}
+
+\item{width}{Amount of jitter}
+
 \item{...}{Other arguments passed on to \code{\link[=layer]{layer()}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{colour = "red"} or \code{size = 3}. They may also be parameters
 to the paired geom/stat.}
-
-\item{offset}{Offset for points}
 }
 \description{
 This is the documentation for stat_catseye. remember to account for missing data

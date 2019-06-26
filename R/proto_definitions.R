@@ -187,7 +187,9 @@ OffsetPoints<- ggplot2::ggproto("OffsetPoints", ggplot2::Stat,
                                required_aes = c("x", "y"),
 
                                compute_panel = function(data, scales, level, width, dodge) {
+                                 data <- na.omit(data)
                                  data$x <- data$x + dodge
+
                                  data
                                }
 )

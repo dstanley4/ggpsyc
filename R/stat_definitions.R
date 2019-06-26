@@ -42,17 +42,18 @@ stat_paired_difference_points <- function(mapping = NULL, data = NULL, geom = "p
 #' This is the documentation for stat_catseye. remember to account for missing data
 #' @inheritParams ggplot2::stat_identity
 #' @param alpha Alpha transparency. Default 1.0 value.
-#' @param offset Offset for points
+#' @param dodge Offset for points
+#' @param width Amount of jitter
 #' @export
 stat_jitter_dodge <- function(mapping = NULL, data = NULL, geom = "point",
                                           position = "identity", show.legend = NA,
-                                          inherit.aes = TRUE, alpha = 1, dodge = -.30, width = .1, ...) {
+                                          inherit.aes = TRUE, alpha = 1, dodge = -.30, width = .1,...) {
 
   list(
     ggplot2::layer(
       stat = OffsetPoints, data = data, mapping = mapping, geom = "point",
       position = position_jitter(width = width), show.legend = show.legend, inherit.aes = inherit.aes,
-      params = list(alpha = alpha, dodge = dodge, ...)
+      params = list(alpha = alpha, dodge = dodge, na.rm = TRUE,...)
     )
   )
 }
@@ -74,43 +75,43 @@ stat_two_group_ci <- function(mapping = NULL, data = NULL, geom = "point",
     ggplot2::layer(
       stat = MeanDiffLineGroup1, data = data, mapping = mapping, geom = "line",
       position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-      params = list(linetype = 2, ...)
+      params = list(linetype = 2, na.rm = TRUE, ...)
     ),
     ggplot2::layer(
       stat = MeanDiffLineGroup2, data = data, mapping = mapping, geom = "line",
       position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-      params = list(linetype = 2, ...)
+      params = list(linetype = 2, na.rm = TRUE, ...)
     ),
     ggplot2::layer(
       stat = MeanDiffCI, data = data, mapping = mapping, geom = "errorbar",
       position = position, show.legend = FALSE, inherit.aes = inherit.aes,
-      params = list(width = .2, paired = paired, var.equal = var.equal, level = level, ...)
+      params = list(width = .2, paired = paired, var.equal = var.equal, level = level, na.rm = TRUE,...)
     ),
     ggplot2::layer(
       stat = MeanDiffCIPoint, data = data, mapping = mapping, geom = "point",
       position = position, show.legend = FALSE, inherit.aes = inherit.aes,
       params = list(paired = paired, var.equal = var.equal,
-                    level = level, shape = 17, size = 4, ...)
+                    level = level, shape = 17, size = 4, na.rm = TRUE, ...)
     ),
     ggplot2::layer(
       stat = DiffScale, data = data, mapping = mapping, geom = "segment",
       position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-      params = list(var.equal = var.equal, paired = paired, level = level, ...)
+      params = list(var.equal = var.equal, paired = paired, level = level, na.rm = TRUE, ...)
     ),
     ggplot2::layer(
       stat = DiffScaleLabels, data = data, mapping = mapping, geom = "text",
       position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-      params = list(var.equal = var.equal, paired = paired, level = level, size = text_size, ...)
+      params = list(var.equal = var.equal, paired = paired, level = level, size = text_size, na.rm = TRUE,...)
     ),
     ggplot2::layer(
       stat = ScaleTitle, data = data, mapping = mapping, geom = "text",
       position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-      params = list(var.equal = var.equal, paired = paired, level = level, angle = 90, ...)
+      params = list(var.equal = var.equal, paired = paired, level = level, angle = 90, na.rm = TRUE,...)
     ),
     ggplot2::layer(
       stat = ExtendXAxis, data = data, mapping = mapping, geom = "point",
       position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-      params = list(alpha = 0, ...)
+      params = list(alpha = 0, na.rm = TRUE, ...)
     )
   )
 }

@@ -2,9 +2,9 @@
 % Please edit documentation in R/ggpsyc.R
 \docType{package}
 \name{apaTables}
+\alias{-package}
 \alias{apaTables}
 \alias{ggpsyc}
-\alias{apaTables-package}
 \title{Greate ITNS graphs}
 \description{
 Users of the Introduction to the New Statistics textbook may wish to create graphs similar to those in the book - which this package faciliates.

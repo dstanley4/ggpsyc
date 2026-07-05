@@ -44,15 +44,19 @@ stat_paired_difference_points <- function(mapping = NULL, data = NULL, geom = "p
 #' @param alpha Alpha transparency. Default 1.0 value.
 #' @param dodge Offset for points
 #' @param width Amount of jitter
+#' @param seed Random seed for the jitter, so the same data always produce the
+#'   same figure (reproducible across renders and re-prints). Set to NULL for
+#'   a fresh jitter on every print.
 #' @export
 stat_jitter_dodge <- function(mapping = NULL, data = NULL, geom = "point",
                                           position = "identity", show.legend = NA,
-                                          inherit.aes = TRUE, alpha = 1, dodge = -.30, width = .1,...) {
+                                          inherit.aes = TRUE, alpha = 1, dodge = -.30, width = .1,
+                                          seed = 343, ...) {
 
   list(
     ggplot2::layer(
       stat = OffsetPoints, data = data, mapping = mapping, geom = "point",
-      position = position_jitter(width = width), show.legend = show.legend, inherit.aes = inherit.aes,
+      position = position_jitter(width = width, seed = seed), show.legend = show.legend, inherit.aes = inherit.aes,
       params = list(alpha = alpha, dodge = dodge, na.rm = TRUE,...)
     )
   )

@@ -181,7 +181,15 @@ get_scale_details <- function(data, scales, level, paired, var.equal) {
   lowest_value <- min((0 - ci_length_extended*1.2), (LL - ci_length_extended*1.2), na.rm = TRUE)
   highest_value <- UL + ci_length_extended
 
-  ci_ticks <- grDevices::axisTicks(usr=c(lowest_value, highest_value),log=FALSE, nint = 8)
+  # The difference axis is drawn 1:1 on the DV scale (scale_ticks <- ci_ticks +
+  # scale_y), so it occupies only as many DV units of vertical space as the
+  # difference range spans — typically a short segment relative to the full
+  # panel. nint = 8 packed ~12 half-unit ticks (e.g. -0.5, 0, 0.5, ... 5) into
+  # that short segment, so the tick labels overlapped into an illegible stack.
+  # Fewer target intervals give axisTicks room to pick widely-spaced whole-number
+  # "nice" ticks (e.g. 0, 2, 4) that keep clear daylight between labels even after
+  # the text is sized for legibility.
+  ci_ticks <- grDevices::axisTicks(usr=c(lowest_value, highest_value),log=FALSE, nint = 3)
   scale_ticks <- ci_ticks + scale_y
   scale_ymin <- scale_ticks[1]
   scale_ymax <- scale_ticks[length(scale_ticks)]

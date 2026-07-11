@@ -190,6 +190,15 @@ get_scale_details <- function(data, scales, level, paired, var.equal) {
   # "nice" ticks (e.g. 0, 2, 4) that keep clear daylight between labels even after
   # the text is sized for legibility.
   ci_ticks <- grDevices::axisTicks(usr=c(lowest_value, highest_value),log=FALSE, nint = 3)
+  # A near-zero effect makes the difference RANGE narrow, so even nint = 3 packs 4-5
+  # whole-number ticks (e.g. -2,-1,0,1,2) into the physically short (1:1-on-DV) axis and
+  # the labels overlap once sized for legibility. Cap at 3 ticks -- keep the two ends and
+  # the one nearest zero -- so labels always clear, whatever the range (wide ranges like a
+  # large effect already return <= 3 and are untouched).
+  if (length(ci_ticks) > 3) {
+    zero_i   <- which.min(abs(ci_ticks))
+    ci_ticks <- sort(unique(ci_ticks[c(1, zero_i, length(ci_ticks))]))
+  }
   scale_ticks <- ci_ticks + scale_y
   scale_ymin <- scale_ticks[1]
   scale_ymax <- scale_ticks[length(scale_ticks)]
